@@ -2,7 +2,7 @@
 
 ## Introduction
 
-A simple application with the ability to add, edit and delete data todo.
+A simple application with the ability to add, read, edit and delete data todo.
 
 ### Compile the Smart Contract
 
@@ -22,7 +22,7 @@ $ cd todo
 $ cline set contract YOUR_ACCOUNT_NAME ./
 ```
 
-## Run the webapp at your Inery node server
+## Run the app at your Inery node server
 
 In addition to the above prerequisites, you'll need run the requirements to install all the dependencies:
 
