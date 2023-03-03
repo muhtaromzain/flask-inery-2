@@ -1,0 +1,5 @@
+flask==2.2.3
+inerypy==0.1
+urllib3==1.26.14
+requests==2.28.2
+python-dotenv==1.0.0

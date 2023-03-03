@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title>Dapp</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+      body {
+        background-color: #111;
+      }
+      p, h2, h3 {
+        color: #eee;
+      }
+      .btn-primary {
+        background: #8e05c2;
+        border-radius: 6px;
+        border: 0;
+      }
+      .btn-primary:hover {
+        background: #6a0492;
+        border-color: #520471;
+      }
+      .btn-primary:active {
+        background: #59047a !important;
+      }
+      .btn-primary:focus, .btn-primary.focus {
+        background-color: #8e05c2;
+        border-color: #520471;
+        -webkit-box-shadow: 0 0 0 0.2rem rgba(120, 7, 122, 0.5) !important;
+          box-shadow: 0 0 0 0.2rem rgba(120, 7, 122, 0.5) !important;
+      }
+    </style>
+    <script  type = "text/javascript">
+      function redirect(link) {
+        window.location.href = link;
+     }
+    </script>
+</head>
+  <body>
+  <div class="container">
+    <h2 class="display-2 text-center mb-5">Dapp</h2>
+    <form method="POST" action="/">
+        <div class="input-group mb-3">
+            <input type="text" name="text" class="form-control" placeholder="Insert data">
+            <div class="input-group-append" id="button-addon">
+              <button class="btn btn-primary" type="submit" value="update">Submit</button>
+            </div>
+        </div>
+    </form>
+
+    <h2 class="display-3 text-center mt-4">List of data</h2>
+    {% if datas %}
+    {% if datas.rows %}
+    {% for data in datas.rows %}
+      <p>
+        <form method="POST" action="/edit/{{data.id}}">
+            <div class="input-group mb-3">
+
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <input type="hidden" name="done" value="off">
+                    <input type="checkbox" onclick="redirect('/edit/{{data.id}}')" data-target="/edit/{{data.id}}" name="done">
+                </div>
+              </div>
+
+              <input type="text" value="{{data.data}}" name="text" class="form-control">
+
+              <div class="input-group-append" id="button-addon2">
+                <button class="btn btn-success" type="submit" value="update">Update</button>
+              </div>
+
+            </div>
+        </form>
+      {% endfor %}
+    {% else %}
+    <p class="text-center mt-4">{{datas}}</p>
+    {% endif %}
+    {% else %}
+    <p class="text-center mt-4">No data available</p>
+    {% endif %}
+  </div>
+  </body>
+</html>
