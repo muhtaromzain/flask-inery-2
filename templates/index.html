@@ -4,28 +4,29 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
       body {
-        background-color: #111;
+        background: rgb(6,104,109);
+        background: radial-gradient(circle, rgba(6,104,109,1) 0%, rgba(0,27,55,1) 100%); 
       }
       p, h2, h3 {
         color: #eee;
       }
       .btn-primary {
-        background: #8e05c2;
+        background: #09B5EC;
         border-radius: 6px;
         border: 0;
       }
       .btn-primary:hover {
-        background: #6a0492;
-        border-color: #520471;
+        background: #0793c2;
+        border-color: #055f7c;
       }
       .btn-primary:active {
-        background: #59047a !important;
+        background: #06779c !important;
       }
       .btn-primary:focus, .btn-primary.focus {
-        background-color: #8e05c2;
-        border-color: #520471;
-        -webkit-box-shadow: 0 0 0 0.2rem rgba(120, 7, 122, 0.5) !important;
-          box-shadow: 0 0 0 0.2rem rgba(120, 7, 122, 0.5) !important;
+        background-color: #059fd2;
+        border-color: #055f7c;
+        -webkit-box-shadow: 0 0 0 0.2rem rgba(5, 95, 124, 0.5) !important;
+          box-shadow: 0 0 0 0.2rem rgba(5, 95, 124, 0.5) !important;
       }
     </style>
     <script  type = "text/javascript">
@@ -64,7 +65,7 @@
               <input type="text" value="{{data.data}}" name="text" class="form-control">
 
               <div class="input-group-append" id="button-addon2">
-                <button class="btn btn-success" type="submit" value="update">Update</button>
+                <button class="btn btn-primary" type="submit" value="update">Update</button>
               </div>
 
             </div>
