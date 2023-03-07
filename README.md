@@ -4,6 +4,12 @@
 
 A simple application with the ability to add, read, edit and delete data todo.
 
+## Dependency
+```
+Python 3
+```
+
+
 ### Compile the Smart Contract
 
 Type below commands to generate the WAST & ABI file:
@@ -39,19 +45,12 @@ Before run the app, you'll need to change the env file. you need to rename `.env
 ACCOUNT = you_account_name
 PRIVATE_KEY = your_private_key
 URL = your_node_server_url
-TABLE = your_table_name
 ```
 
 Start the web server:
 
 ```bash
 $ python main.py
-```
-
-OR
-
-```bash
-$ python3 main.py
 ```
 
 Browse the `http://127.0.0.1:5000/` to run the demo.

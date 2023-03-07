@@ -17,11 +17,11 @@ url         = os.environ.get('URL')
 if (url):
     api         = Cline(url=url)
 else:
-    api         = Cline(url="https://tas.blockchain-servers.world")
+    api         = Cline()
 
 account     = os.environ.get('ACCOUNT')
 privatekey  = os.environ.get('PRIVATE_KEY')
-table       = os.environ.get('TABLE')
+table       = 'records'
 
 def get():
     try:
@@ -77,7 +77,7 @@ def view_index():
         name        = 'cr'
         trans_id    = ''
         push(name, trans_id, message)
-        return redirect("/post_submit", code=302)
+        redirect("/", code=302)
     return render_template("index.html", datas=get())
 
 @app.route("/post_submit", methods=["GET"])
@@ -86,17 +86,21 @@ def submit_redirect():
 
 @app.route("/edit/<data_id>", methods=["POST", "GET"])
 def edit_data(data_id):
+    f = ''
+
     if request.method == "POST":
         message     = request.form['text']
         name        = 'up'
         trans_id    = data_id
-        push(name, trans_id, message)
+        f = push(name, trans_id, message)
     elif request.method == "GET":
         message     = ''
         name        = 'dl'
         trans_id    = data_id
-        push(name, trans_id, message)
-    return redirect("/", code=302)
+        f = push(name, trans_id, message)
+    
+    if(f):
+        redirect("/", code=302)
 
 if __name__ == "__main__":
     app.run(debug=True)
