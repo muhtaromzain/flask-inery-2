@@ -29,6 +29,7 @@
           box-shadow: 0 0 0 0.2rem rgba(5, 95, 124, 0.5) !important;
       }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script  type = "text/javascript">
       function redirect(link) {
         window.location.href = link;
@@ -37,46 +38,17 @@
 </head>
   <body>
   <div class="container">
-    <h2 class="display-2 text-center mb-5">Dapp</h2>
-    <form method="POST" action="/">
-        <div class="input-group mb-3">
-            <input type="text" name="text" class="form-control" placeholder="Insert data">
-            <div class="input-group-append" id="button-addon">
-              <button class="btn btn-primary" type="submit" value="update">Submit</button>
-            </div>
-        </div>
-    </form>
-
+    <h2 class="display-2 text-center mb-5">Dapp Todo</h2>
+      <div class="input-group mb-3">
+          <input type="text" name="text" class="form-control create" placeholder="Insert data">
+          <div class="input-group-append" id="button-addon">
+            <button class="btn btn-primary btn-create" type="submit">Submit</button>
+          </div>
+      </div>
     <h2 class="display-3 text-center mt-4">List of data</h2>
-    {% if datas %}
-    {% if datas.rows %}
-    {% for data in datas.rows %}
-      <p>
-        <form method="POST" action="/edit/{{data.id}}">
-            <div class="input-group mb-3">
-
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <input type="hidden" name="done" value="off">
-                    <input type="checkbox" onclick="redirect('/edit/{{data.id}}')" data-target="/edit/{{data.id}}" name="done">
-                </div>
-              </div>
-
-              <input type="text" value="{{data.data}}" name="text" class="form-control">
-
-              <div class="input-group-append" id="button-addon2">
-                <button class="btn btn-primary" type="submit" value="update">Update</button>
-              </div>
-
-            </div>
-        </form>
-      {% endfor %}
-    {% else %}
-    <p class="text-center mt-4">{{datas}}</p>
-    {% endif %}
-    {% else %}
-    <p class="text-center mt-4">No data available</p>
-    {% endif %}
+    <div class="wrapper">
+    </div>
   </div>
-  </body>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
 </html>

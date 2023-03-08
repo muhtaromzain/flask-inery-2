@@ -23,12 +23,20 @@ account     = os.environ.get('ACCOUNT')
 privatekey  = os.environ.get('PRIVATE_KEY')
 table       = 'records'
 
+def checkConfig():
+    if (os.path.isfile('.env')):
+        return False if not account or not privatekey or account is None or privatekey is None else True
+        
+    return False
+
 def get():
     try:
         tableJs = api.get_table(account, account, table, limit=2000)
+        if (not tableJs['rows']):
+            tableJs = []
     except Exception as e:
         tableJs = e
-    return tableJs
+    return render_template('components/listData.html', datas=tableJs)
 
 def push(mod, trans_id, text):
     action = mod
@@ -70,37 +78,52 @@ def push(mod, trans_id, text):
 
     return result
 
-@app.route("/", methods=["POST", "GET"])
+@app.route("/", methods=["GET"])
 def view_index():
-    if request.method == "POST":
-        message     = request.form['text']
-        name        = 'cr'
-        trans_id    = ''
-        push(name, trans_id, message)
-        redirect("/", code=302)
-    return render_template("index.html", datas=get())
+    if (not checkConfig()):
+        return render_template("index.html", datas="Please insert your account / private key in .env file")
 
-@app.route("/post_submit", methods=["GET"])
-def submit_redirect():
-    return redirect("/", code=302)
+    return render_template("index.html")
 
-@app.route("/edit/<data_id>", methods=["POST", "GET"])
-def edit_data(data_id):
-    f = ''
+@app.route("/get", methods=["GET"])
+def getData():
+    return get()
 
-    if request.method == "POST":
-        message     = request.form['text']
-        name        = 'up'
-        trans_id    = data_id
-        f = push(name, trans_id, message)
-    elif request.method == "GET":
-        message     = ''
-        name        = 'dl'
-        trans_id    = data_id
-        f = push(name, trans_id, message)
-    
+@app.route("/create", methods=["POST"])
+def createData():
+    f           = ''
+    message     = request.form['text']
+    name        = 'cr'
+    trans_id    = ''
+    f           = push(name, trans_id, message)
+
     if(f):
-        redirect("/", code=302)
+        print(f)
+        return f
+
+@app.route("/edit/<data_id>", methods=["POST"])
+def editData(data_id):
+    f           = ''
+    message     = request.form['text']
+    name        = 'up'
+    trans_id    = data_id
+    f           = push(name, trans_id, message)
+
+    if(f):
+        print(f)
+        return f
+
+@app.route("/delete/<data_id>", methods=["POST"])
+def delete_data(data_id):
+    f           = ''
+    message     = ''
+    name        = 'dl'
+    trans_id    = data_id
+    f           = push(name, trans_id, message)
+
+    if(f):
+        print(f)
+        return f
 
 if __name__ == "__main__":
     app.run(debug=True)
