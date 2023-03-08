@@ -91,10 +91,10 @@ function typeMessage(type, event) {
   return message;
 }
 
-function loading(type) {
+function loading(flag) {
   var message;
 
-  message = typeMessage(type, 'loading');
+  message = typeMessage(flag, 'loading');
 
   Swal.fire({
       title: 'Please wait!',
@@ -107,20 +107,53 @@ function loading(type) {
   });
 }
 
-function done(type) {
+function done(flag, data_id = "", data_value = "", data_length = 0) {
   var message;
+  var setTimer;
+  
+  switch (flag) {
+    case 'create':
+        setTimer = 5000;
+        break;
+    default:
+        setTimer = 2000;
+        break;
+  }
 
-  message = typeMessage(type, 'done');
+  message = typeMessage(flag, 'done');
 
   Swal.fire({
     title: message,
     icon: 'success',
     showConfirmButton: false,
-    timer: 2000
+    timer: setTimer
   }).then(() => {
-      get();
       Swal.close();
+      if (flag == 'create') {
+            get();
+      } else if (flag == 'delete') {
+          document.querySelector('[data-id="'+data_id+'"]').closest('.input-group').remove();
+          if (data_length == 1) {
+              document.querySelector('.wrapper').innerHTML = '<p class="text-center mt-4">No data available</p>';
+          }
+      } else if (flag == 'update') {
+            document.querySelector('[data-id="'+data_id+'"]').closest('input').value = data_value;
+      }
   });
+}
+
+function log(msg) {
+    document.querySelectorAll('code')[0].innerHTML         = msg;
+    document.querySelectorAll('.log')[0].style.display     = '';
+}
+
+function checkValidJson(jsonData) {
+    try {
+        JSON.parse(jsonData);
+        return true;
+    } catch(error) {
+        return false;
+    }
 }
 
 function get() {
@@ -131,33 +164,31 @@ function get() {
 
         var btnUpdate = document.querySelectorAll('.update');
         var btnDelete = document.querySelectorAll('.delete');
-        var btnCreate = document.querySelector('.btn-create');
-
-        // create
-        btnCreate.addEventListener('click', function(e) {
-            var inputGroupCreate = (this).closest('.input-group');
-            var dataCreate       = inputGroupCreate.querySelector('.create').value;
-            loading('create');
-            ajax.post('create', dataCreate, function(responseText) {
-                if (responseText) {
-                    console.log(responseText)
-                    done('create');
-                }
-            });
-        })
 
         // update
         if (btnUpdate.length != 0) {
             for (var i = 0; i < btnUpdate.length; i++) {
                 btnUpdate[i].addEventListener('click', function(e) {
-                    var inputGroup = (this).closest('.input-group')
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var inputGroup = (this).closest('.input-group');
                     var dataUpdate = inputGroup.querySelector('.todo-text').value;
                     var dataId = inputGroup.querySelector(".todo-text").dataset.id;
                     loading('update');
                     ajax.post('edit/'+dataId, dataUpdate, function(responseText) {
-                        if (responseText) {
-                          console.log(responseText)
-                          done('update');
+                        var validJson = checkValidJson(responseText);
+                        if (validJson) {
+                            if (responseText) {
+                                log(responseText);
+                                done('update', dataId, dataUpdate);
+                            }
+                        }
+                        else {
+                            Swal.fire({
+                                title: 'Error',
+                                message: responseText,
+                                icon: 'error'
+                            })
                         }
                     })
                 })
@@ -168,12 +199,24 @@ function get() {
         if (btnDelete.length != 0) {
             for (var i = 0; i < btnDelete.length; i++) {
                 btnDelete[i].addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 var deleteId = this.dataset.target;
                 loading('delete');
                 ajax.post('delete/'+deleteId, '', function(responseText) {
-                    if (responseText) {
-                        console.log(responseText)
-                        done('delete');
+                    var validJson = checkValidJson(responseText);
+                    if (validJson) {
+                        if (responseText) {
+                            log(responseText);
+                            done('delete', deleteId, '', document.querySelectorAll('.delete').length);
+                        }
+                    }
+                    else {
+                        Swal.fire({
+                            title: 'Error',
+                            message: responseText,
+                            icon: 'error'
+                        })
                     }
                 })
                 })
@@ -185,5 +228,22 @@ function get() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+    var btnCreate = document.querySelector('.btn-create');
+
+    // create
+    btnCreate.addEventListener('click', function(e) {
+        var inputGroupCreate = (this).closest('.input-group');
+        var dataCreate       = inputGroupCreate.querySelector('.create').value;
+        loading('create');
+        ajax.post('create', dataCreate, function(responseText) {
+            if (responseText) {
+                log(responseText); 
+                done('create');
+                document.querySelector('.btn-create').disabled = false;
+                inputGroupCreate.querySelector('.create').value = '';
+            }
+        });
+    })
+
     get();
 });

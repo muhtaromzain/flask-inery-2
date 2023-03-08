@@ -40,7 +40,7 @@
   <div class="container">
     <h2 class="display-2 text-center mb-5">Dapp Todo</h2>
       <div class="input-group mb-3">
-          <input type="text" name="text" class="form-control create" placeholder="Insert data">
+          <input type="text" name="text" class="form-control create" placeholder="Insert data" autocomplete="off">
           <div class="input-group-append" id="button-addon">
             <button class="btn btn-primary btn-create" type="submit">Submit</button>
           </div>
@@ -48,6 +48,8 @@
     <h2 class="display-3 text-center mt-4">List of data</h2>
     <div class="wrapper">
     </div>
+    <h2 class="display-3 text-center mt-4 log" style="display: none;">Transaction log</h2>
+    <pre class="json" style="background-color: white;"><code></code></pre>
   </div>
   <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>

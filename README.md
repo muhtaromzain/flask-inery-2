@@ -12,11 +12,11 @@ Python 3
 
 ### Compile the Smart Contract
 
-Type below commands to generate the WAST & ABI file:
+Type below commands to generate the WASM & ABI file:
 
 ```bash
-$ cd todo
-$ inery-cpp ./todo.cpp -o ./todo.wasm
+$ cd todocrud
+$ inery-cpp ./todocrud.cpp -o ./todocrud.wasm
 ```
 
 ### Deploy and run the Smart Contract
@@ -24,7 +24,7 @@ $ inery-cpp ./todo.cpp -o ./todo.wasm
 This includes the source code of the INERY Smart Contract which to simulate a simple contacts list.
 
 ```bash
-$ cd todo
+$ cd todocrud
 $ cline set contract YOUR_ACCOUNT_NAME ./
 ```
 

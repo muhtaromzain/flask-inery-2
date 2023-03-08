@@ -73,8 +73,11 @@ def push(mod, trans_id, text):
 
     key = keys.INRKey(privatekey)
     
-    resp = api.push_transaction(trx, key, broadcast=True)
-    result = json.dumps(resp, indent = 4) 
+    try:
+        resp = api.push_transaction(trx, key, broadcast=True)
+        result = json.dumps(resp, indent = 4) 
+    except Exception as e:
+        result = e
 
     return result
 
